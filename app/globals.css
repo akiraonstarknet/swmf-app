@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-rgb: 0, 0, 0;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Custom z-index values */
+  .z-500 {
+    z-index: 500;
+  }
+
+  .z-600 {
+    z-index: 600;
+  }
+
+  .z-1000 {
+    z-index: 1000;
+  }
+
+  .z-2000 {
+    z-index: 2000;
+  }
+}
+
