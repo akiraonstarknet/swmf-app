@@ -12,13 +12,20 @@ export function isMainnet() {
 
 export const MESSAGE = "Starknet to be the first L2 to settle on both Bitcoin and Ethereum. Working towards truely realising the bitcoin vision: Decentralised low cost global payments system."
 
-export const SUPPORTED_CHAINS = [
+export const SUPPORTED_CHAINS = isMainnet()?[
   // { id: "starknet", name: "Starknet", plugin: "starknet" },
-  { id: "ethereum", name: "Ethereum", plugin: "evm" },
-  // { id: "base", name: "Base", plugin: "evm" },
-  // { id: "optimism", name: "Optimism", plugin: "evm" },
+  { id: "ethereum", name: "Ethereum", plugin: "evm",chainId:1 },
+  { id: "base", name: "Base", plugin: "evm",chainId:8453 },
+  { id: "optimism", name: "Optimism", plugin: "evm",chainId:10 },
   // { id: "solana", name: "Solana", plugin: "solana" },
-  // { id: "arbitrum", name: "Arbitrum", plugin: "evm" },
+  { id: "arbitrum", name: "Arbitrum", plugin: "evm",chainId:42161 },
+]: [
+  // { id: "starknet", name: "Starknet", plugin: "starknet" },
+  { id: "ethereum", name: "Ethereum", plugin: "evm",chainId:11155111 },
+  { id: "base", name: "Base", plugin: "evm",chainId:84532 },
+  { id: "optimism", name: "Optimism", plugin: "evm",chainId:11155420 },
+  // { id: "solana", name: "Solana", plugin: "solana" },
+  { id: "arbitrum", name: "Arbitrum", plugin: "evm",chainId:421614 },
 ]
 
 export function shortAddress(
