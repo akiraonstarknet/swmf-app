@@ -6,36 +6,37 @@ import { ConnectKitButton, ConnectKitProvider, getDefaultConfig } from "connectk
 import * as ethers from 'ethers';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { getChainId } from 'viem/actions';
+import { switchChain } from "@wagmi/core";
 
 const WALLET_CONNECT_DEFAULT_PROJECT_ID = "242405a2808ac6e90831cb540f36617f"; // akira@unls.com wallet connect account
 
 export const config = createConfig(getDefaultConfig({
     chains: isMainnet() ? [mainnet,base,arbitrum,optimism] : [sepolia,baseSepolia,arbitrumSepolia,optimismSepolia],
     transports: {
-      [mainnet.id]: http(),
-      [sepolia.id]: http(),
-      [baseSepolia.id]:http(),
+        [mainnet.id]: http(),
+        [base.id]: http(),  
+        [arbitrum.id]: http(),
+        [optimism.id]: http(),
+
+        [sepolia.id]: http(),
+        [baseSepolia.id]:http(),
+        [arbitrumSepolia.id]: http(),
+        [optimismSepolia.id]: http(),
     },
     walletConnectProjectId: WALLET_CONNECT_DEFAULT_PROJECT_ID,
     appName: "SWMF",
-    appDescription: "Bridge funds to Starknet dApps in a single click",
+    appDescription: "Starknet to be the first L2 to settle on both Bitcoin and Ethereum",
     appUrl: "https://swmf.fun", // your app's url
     appIcon: "https://swmf.fun/logo.png", // your app's icon, no bigger than 1024x1024px (max. 1MB)
 }))
 
-export const supportEVMChains = isMainnet() ? [{
-    name: "Ethereum",
-}] : [{
-    name: "Sepolia"
-}];
-
 export interface SignerComponentProps {
     onSuccess: (txHash: string, userAddress: string) => void;
+    protocolChainSelected: number;
 }
 
 const queryClient = new QueryClient()
-export const EVMSigner = (props: SignerComponentProps & { protocolChainSelected: number }) => {
+export const EVMSigner = (props: SignerComponentProps) => {
     return (
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
@@ -47,10 +48,10 @@ export const EVMSigner = (props: SignerComponentProps & { protocolChainSelected:
     );
 };
   
-export function EVMAction(props: SignerComponentProps & { protocolChainSelected: number }) {
+export function EVMAction(props: SignerComponentProps) {
     const disconnect = useDisconnect();
     const publicClient = usePublicClient();
-    const {chainId}=useAccount()
+    const { chainId } = useAccount()
     const { data: hash, sendTransactionAsync } = useSendTransaction()
 
     const { data: txData, status: txStatus, isError, isLoading } = useWaitForTransactionReceipt({
@@ -58,13 +59,35 @@ export function EVMAction(props: SignerComponentProps & { protocolChainSelected:
     });
 
     useEffect(() => {
+        console.log('txData', txData, 'hash', hash, 'txStatus', txStatus)
         if (txData && hash && txStatus == 'success') {
+            toast.success('Transaction Successful',{
+                position:'top-right'
+            })
             props.onSuccess(hash, txData.from)
+        }
+        if (txData && hash && txStatus == 'error') {
+            toast.error('Transaction Failed. Please retry.',{
+                position:'top-right'
+            })
         }
     }, [txData, hash])
 
+    useEffect(()=>{
+        const changeChain=async()=>{
+          try {
+            console.log('switching chain')
+            await switchChain(config, { chainId: props.protocolChainSelected })
+          } catch (error) {
+            console.log(error,'err in switching chain')
+          }
+        }
+        console.log('chainId',chainId,props.protocolChainSelected)
+        if (props.protocolChainSelected != chainId)
+            changeChain()
+      },[props.protocolChainSelected])
+
     async function sign() {
-        console.log('ethers', ethers, ethers.hexlify(ethers.toUtf8Bytes(MESSAGE)))
         sendTransactionAsync({
             // chainId: sepolia.id,
             to: "0x0000000000000000000000000000000000000000",
@@ -73,10 +96,10 @@ export function EVMAction(props: SignerComponentProps & { protocolChainSelected:
         }).then((tx) => {
             console.log('tx', tx)
         }).catch((e) => {
-            toast.error('Error',{
-                position:'bottom-right'
-            })
             console.error('error', e)
+            toast.error('Error',{
+                position:'top-right'
+            })
         });
     }
 
@@ -87,7 +110,7 @@ export function EVMAction(props: SignerComponentProps & { protocolChainSelected:
                     {address &&(chainId!==props.protocolChainSelected) &&<div className='mb-4 text-red-600'>
                         Incorrect Chain Detected! Please switch to the correct chain in your wallet to continue
                     </div>}
-                    <div className='flex w-full gap-2 items-center justify-center'>
+                    <div className='flex flex-col md:flex-row w-full gap-2 items-center justify-center'>
                         <button
                             className={cn(
                                 "bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-lg transition-colors mb-1",

@@ -83,7 +83,7 @@ export function TpsTrails({ targetPosition, startFromHero = false, startFromBott
     return {
       id,
       // Start position - horizontal spread around center
-      startX: 50 + (Math.random() - 0.5) * 30, // Random horizontal position around center (35-65%)
+      startX: 50 + (Math.random() - 0.5) * 100, // Random horizontal position around center (35-65%)
       startY: startY, // Start position based on props
       // Random properties for varied appearance
       duration: 0.5 + Math.random() * 0.5, // Random duration (0.5-1s)
@@ -119,7 +119,7 @@ export function TpsTrails({ targetPosition, startFromHero = false, startFromBott
               left: [`${trail.startX}%`, `calc(${targetPosition.x} + ${trail.offsetX}px)`],
               top: [`${trail.startY}%`, `calc(${targetPosition.y} + ${trail.offsetY}px)`],
               opacity: [0, 1, 0],
-              scale: [0.5, 1, 0.5],
+              scale: [1, 2, 1],
             }}
             transition={{
               duration: trail.duration,

@@ -125,7 +125,7 @@ export function CometTrail({ from, to, color, trigger, duration }: CometTrailPro
     id: i,
     size: 2 + Math.random() * 3,
     delay: i * 0.05,
-    offsetX: Math.random() * 10 - 5,
+    offsetX: 0,
     offsetY: Math.random() * 10 - 5,
   }))
 
@@ -148,7 +148,7 @@ export function CometTrail({ from, to, color, trigger, duration }: CometTrailPro
           />
 
           {/* Comet tail */}
-          <motion.div
+          {/* <motion.div
             className="absolute top-1/2 h-2 transform -translate-y-1/2 z-0"
             style={{
               background:
@@ -163,7 +163,7 @@ export function CometTrail({ from, to, color, trigger, duration }: CometTrailPro
               opacity: 0,
               left: to === "left" ? dimensions.width / 2 - dimensions.width / 10 : dimensions.width / 2,
             }}
-          />
+          /> */}
 
           {/* Particles for comet effect */}
           <motion.div

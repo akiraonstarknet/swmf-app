@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
+import { TwitterShareButton } from "react-share";
 
 interface FlipTileProps {
   text: string
