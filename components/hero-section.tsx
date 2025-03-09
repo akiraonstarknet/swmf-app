@@ -184,13 +184,13 @@ export function HeroSection() {
   }
 
   return (
-    <div className="flex flex-col items-center text-center mt-8 mb-12 max-w-4xl mx-auto mt-[150px]">
+    <div className="flex flex-col items-center text-center mt-8 mb-12 max-w-4xl mx-auto mt-[50px] md:mt-[150px]">
       {/* Main Heading */}
       {/* <h1 className="text-2xl md:text-2xl font-bold mb-4">
         The First L2 to Settle on Both Bitcoin & Ethereum
       </h1> */}
       <motion.h1
-          className="text-2xl md:text-5xl lg:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-orange-500"
+          className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-orange-500"
           initial={{ scale: 0.9 }}
           animate={{ scale: 1 }}
           transition={{
