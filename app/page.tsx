@@ -12,6 +12,7 @@ import { Icons } from "@/components/Icons"
 import { motion } from "framer-motion"
 import ShareButton from "@/components/ShareButton"
 import { CometTrail2 } from "@/components/comet-trail2"
+import Soundbar from "@/components/audio/Soundbar"
 
 export default function Home() {
   const [animationTrigger, setAnimationTrigger] = useState(0)
@@ -53,6 +54,7 @@ export default function Home() {
 
        {/* Header with blockchain names */}
        <div className="relative h-24 z-60">
+       <Soundbar/>
         {/* Trail container - positioned below text */}
         {/* <div className="absolute inset-0 opacity-50">
           <CometTrail2
