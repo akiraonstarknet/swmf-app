@@ -110,7 +110,7 @@ export default function Home() {
       {!showTpsTrails && <div className="relative z-1000">
         <HeroSection/>
       </div>}
-      {showTpsTrails && <div className="relative z-1000 mt-[200px]">
+      {showTpsTrails && <div className="relative z-1000 mt-[150px]">
         <div className="flex flex-col items-center text-center mt-8 mb-12 max-w-4xl mx-auto">
           <motion.h1
             className="text-2xl md:text-5xl lg:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-orange-500"

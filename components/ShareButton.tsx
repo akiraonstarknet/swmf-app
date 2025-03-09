@@ -28,9 +28,8 @@ export default function ShareButton() {
           className="bg-white rounded-lg border border-black shadow-sm"
         >
           <TwitterShareButton
-            url={'app.endur.fi'}
+            url={'swmf.fun'}
             title="Minted My NFT on Starknet"
-            related={["endurfi", "strkfarm", "karnotxyz"]}
             style={{
               display: "flex",
               alignItems: "center",
