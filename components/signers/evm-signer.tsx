@@ -1,18 +1,21 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { cn, isMainnet, MESSAGE, shortAddress } from '@/lib/utils'
 import { http, createConfig, WagmiProvider, useAccount, useConnect, useDisconnect, useSendTransaction, useWaitForTransactionReceipt, usePublicClient} from 'wagmi'
-import { mainnet, sepolia } from 'wagmi/chains'
+import { arbitrum, arbitrumSepolia, base, baseSepolia, mainnet, optimism, optimismSepolia, sepolia } from 'wagmi/chains'
 import { ConnectKitButton, ConnectKitProvider, getDefaultConfig } from "connectkit";
 import * as ethers from 'ethers';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { getChainId } from 'viem/actions';
 
 const WALLET_CONNECT_DEFAULT_PROJECT_ID = "242405a2808ac6e90831cb540f36617f"; // akira@unls.com wallet connect account
 
 export const config = createConfig(getDefaultConfig({
-    chains: isMainnet() ? [mainnet] : [sepolia],
+    chains: isMainnet() ? [mainnet,base,arbitrum,optimism] : [sepolia,baseSepolia,arbitrumSepolia,optimismSepolia],
     transports: {
       [mainnet.id]: http(),
       [sepolia.id]: http(),
+      [baseSepolia.id]:http(),
     },
     walletConnectProjectId: WALLET_CONNECT_DEFAULT_PROJECT_ID,
     appName: "SWMF",
@@ -32,7 +35,7 @@ export interface SignerComponentProps {
 }
 
 const queryClient = new QueryClient()
-export const EVMSigner = (props: SignerComponentProps) => {
+export const EVMSigner = (props: SignerComponentProps & { protocolChainSelected: number }) => {
     return (
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
@@ -44,10 +47,10 @@ export const EVMSigner = (props: SignerComponentProps) => {
     );
 };
   
-export function EVMAction(props: SignerComponentProps) {
+export function EVMAction(props: SignerComponentProps & { protocolChainSelected: number }) {
     const disconnect = useDisconnect();
     const publicClient = usePublicClient();
-
+    const {chainId}=useAccount()
     const { data: hash, sendTransactionAsync } = useSendTransaction()
 
     const { data: txData, status: txStatus, isError, isLoading } = useWaitForTransactionReceipt({
@@ -63,13 +66,16 @@ export function EVMAction(props: SignerComponentProps) {
     async function sign() {
         console.log('ethers', ethers, ethers.hexlify(ethers.toUtf8Bytes(MESSAGE)))
         sendTransactionAsync({
-            chainId: sepolia.id,
+            // chainId: sepolia.id,
             to: "0x0000000000000000000000000000000000000000",
             data: ethers.hexlify(ethers.toUtf8Bytes(MESSAGE)) as `0x${string}`,
             value: ethers.parseEther("0"),
         }).then((tx) => {
             console.log('tx', tx)
         }).catch((e) => {
+            toast.error('Error',{
+                position:'bottom-right'
+            })
             console.error('error', e)
         });
     }
@@ -78,6 +84,9 @@ export function EVMAction(props: SignerComponentProps) {
             {({ isConnected, isConnecting, show, hide, address, ensName, chain, truncatedAddress }) => {
             return (
                 <div>
+                    {address &&(chainId!==props.protocolChainSelected) &&<div className='mb-4 text-red-600'>
+                        Incorrect Chain Detected! Please switch to the correct chain in your wallet to continue
+                    </div>}
                     <div className='flex w-full gap-2 items-center justify-center'>
                         <button
                             className={cn(
@@ -93,7 +102,7 @@ export function EVMAction(props: SignerComponentProps) {
                         {address && <button 
                             className={`flex items-center gap-2 bg-green-600 hover:bg-green-700 ${hash ? 'disabled:bg-green-700/40 disabled:cursor-not-allowed disabled:text-white/40' : ''} text-white font-bold py-3 px-8 rounded-lg transition-colors mb-1`}
                             onClick={sign}
-                            disabled={isLoading || txStatus == 'success'}
+                            disabled={isLoading || txStatus == 'success' || chainId!==props.protocolChainSelected}
                         >
                             Send Message 
                             {isLoading && <div role="status">

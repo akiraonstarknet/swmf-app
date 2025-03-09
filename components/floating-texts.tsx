@@ -141,9 +141,9 @@ export function FloatingTexts({ texts }: FloatingTextsProps) {
   return (
     <div className="fixed inset-0 pointer-events-none z-0">
       <AnimatePresence>
-        {visibleTexts.map((item) => (
+        {visibleTexts.map((item,id) => (
           <motion.div
-            key={item.id}
+            key={id}
             className={`absolute ${fontSizes[item.size]} font-medium pointer-events-none`}
             style={{
               left: `${item.position.x}%`,

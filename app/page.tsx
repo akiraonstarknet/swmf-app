@@ -5,6 +5,7 @@ import { CometTrail } from "@/components/comet-trail"
 import { TpsTrails } from "@/components/tps-trails"
 import { HeroSection } from "@/components/hero-section"
 import { FloatingTexts } from "@/components/floating-texts"
+import { ToastContainer } from "react-toastify"
 
 export default function Home() {
   const [animationTrigger, setAnimationTrigger] = useState(0)
@@ -36,6 +37,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black text-white p-8 pb-24">
+      <ToastContainer theme="dark" />
       {/* TPS trails container - positioned behind hero section */}
       {showTpsTrails && (
         <div className="fixed inset-0 pointer-events-none z-500">
@@ -74,7 +76,7 @@ export default function Home() {
       <FloatingTexts texts={promotionalTexts} />
 
       {/* Fixed Feel 1000 TPS Button */}
-      <div className="fixed bottom-8 left-0 right-0 flex justify-center z-2000">
+      <div className="fixed bottom-8 left-0 right-0 flex justify-center z-800">
         <button
           onClick={() => setShowTpsTrails(!showTpsTrails)}
           className="bg-gray-900 hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-lg transition-colors border border-gray-700 shadow-lg"
