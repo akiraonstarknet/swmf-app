@@ -190,7 +190,7 @@ export function HeroSection() {
         The First L2 to Settle on Both Bitcoin & Ethereum
       </h1> */}
       <motion.h1
-          className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-orange-500"
+          className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-orange-500"
           initial={{ scale: 0.9 }}
           animate={{ scale: 1 }}
           transition={{

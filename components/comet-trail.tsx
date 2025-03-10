@@ -123,7 +123,7 @@ export function CometTrail({ from, to, color, trigger, duration }: CometTrailPro
   // Generate particles for comet tail
   const particles = Array.from({ length: 8 }).map((_, i) => ({
     id: i,
-    size: 2 + Math.random() * 3,
+    size: 20 + Math.random() * 3,
     delay: i * 0.05,
     offsetX: 0,
     offsetY: Math.random() * 10 - 5,
@@ -137,11 +137,11 @@ export function CometTrail({ from, to, color, trigger, duration }: CometTrailPro
           <motion.div
             className="absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 z-1"
             style={{
-              width: "8px",
-              height: "8px",
+              width: "20px",
+              height: "20px",
               borderRadius: "50%",
               backgroundColor: colorMap[color].head,
-              boxShadow: `0 0 15px 5px ${colorMap[color].glow}`,
+              boxShadow: `0 0 80px 25px ${colorMap[color].glow}`,
             }}
             animate={cometHeadControls}
             initial={{ left: dimensions.width / 2, opacity: 0 }}
@@ -166,7 +166,7 @@ export function CometTrail({ from, to, color, trigger, duration }: CometTrailPro
           /> */}
 
           {/* Particles for comet effect */}
-          <motion.div
+          {/* <motion.div
             className="absolute top-1/2 transform -translate-y-1/2 z-0"
             animate={cometHeadControls}
             initial={{ left: dimensions.width / 2, opacity: 0 }}
@@ -179,7 +179,7 @@ export function CometTrail({ from, to, color, trigger, duration }: CometTrailPro
                   width: particle.size,
                   height: particle.size,
                   backgroundColor: colorMap[color].head,
-                  boxShadow: `0 0 8px 2px ${colorMap[color].glow}`,
+                  boxShadow: `0 0 80px 20px ${colorMap[color].glow}`,
                   top: particle.offsetY,
                   left: to === "left" ? -20 - particle.offsetX : 20 + particle.offsetX,
                 }}
@@ -192,7 +192,7 @@ export function CometTrail({ from, to, color, trigger, duration }: CometTrailPro
                 }}
               />
             ))}
-          </motion.div>
+          </motion.div> */}
         </div>
       )}
     </div>

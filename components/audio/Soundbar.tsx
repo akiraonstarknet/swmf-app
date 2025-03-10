@@ -5,26 +5,18 @@ import pauseAudio from "../../public/pause.png";
 import rewindAudio from "../../public/rewind.png";
 import downloadIcon from "../../public/download.png";
 import lyricsIcon from "../../public/lyrics.png";
+import { set } from "zod";
 
 const Soundbar = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useState(true);
+  const [tryAutoPlay, setTryAutoPlay] = useState(true);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const audio = new Audio("/swmf.mp3");
       audio.loop = true;
       audioRef.current = audio;
-
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => setPaused(false))
-          .catch((err) => {
-            console.log("Autoplay blocked, waiting for user interaction", err);
-            setPaused(true);
-          });
-      }
 
       audio.addEventListener("canplaythrough", () => {
         if (!paused) {
@@ -38,9 +30,28 @@ const Soundbar = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (audioRef.current && tryAutoPlay) {
+        console.log("Trying to play audio");
+        audioRef.current.play().then(() => {
+          console.log("Audio is playing");
+          setPaused(false);          
+          setTryAutoPlay(false);
+          clearInterval(interval);
+        })
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval); // Cleanup when component unmounts
+    };
+  }, []);
+
   const togglePlayPause = () => {
     if (!audioRef.current) return;
 
+    setTryAutoPlay(false);
     if (paused) {
       audioRef.current.play();
     } else {
