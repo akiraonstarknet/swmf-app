@@ -3,6 +3,8 @@ import Image from "next/image";
 import playAudio from "../../public/sound.png";
 import pauseAudio from "../../public/pause.png";
 import rewindAudio from "../../public/rewind.png";
+import downloadIcon from "../../public/download.png";
+import lyricsIcon from "../../public/lyrics.png";
 
 const Soundbar = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -10,7 +12,7 @@ const Soundbar = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const audio = new Audio("/scalingAudio.mp3");
+      const audio = new Audio("/swmf.mp3");
       audio.loop = true;
       audioRef.current = audio;
 
@@ -18,8 +20,8 @@ const Soundbar = () => {
       if (playPromise !== undefined) {
         playPromise
           .then(() => setPaused(false))
-          .catch(() => {
-            console.log("Autoplay blocked, waiting for user interaction");
+          .catch((err) => {
+            console.log("Autoplay blocked, waiting for user interaction", err);
             setPaused(true);
           });
       }
@@ -56,32 +58,53 @@ const Soundbar = () => {
   };
 
   return (
-    <div className="fixed left-16 top-1/4 flex gap-4">
-        <button className="cursor-pointer" onClick={togglePlayPause}>
-          {paused ? (
+    <div className="text-center">
+      <p className="mb-2 opacity-50">SWMF Anthem</p>
+      <div className="flex gap-4 items-center justify-center">
+          <button className="cursor-pointer" onClick={togglePlayPause}>
+            {paused ? (
+              <Image
+                src={playAudio}
+                alt=""
+                style={{ width: "40px", height: "40px" }}
+              />
+            ) : (
+              <Image
+                src={pauseAudio}
+                alt=""
+                style={{ width: "40px", height: "40px" }}
+              />
+            )}
+          </button>
+          <button className="cursot-pointer pointer-events-auto" onClick={()=>{
+            restartAudio()
+            console.log('cliked')
+          }}>
             <Image
-              src={playAudio}
+              src={rewindAudio}
               alt=""
               style={{ width: "40px", height: "40px" }}
             />
-          ) : (
-            <Image
-              src={pauseAudio}
-              alt=""
-              style={{ width: "40px", height: "40px" }}
-            />
-          )}
-        </button>
-        <button className="cursot-pointer pointer-events-auto" onClick={()=>{
-          restartAudio()
-          console.log('cliked')
-        }}>
-          <Image
-            src={rewindAudio}
-            alt=""
-            style={{ width: "40px", height: "40px" }}
-          />
-        </button>
+          </button>
+          <button className="cursot-pointer pointer-events-auto">
+            <a href="/swmf.mp3" target="_blank" download>
+              <Image
+                src={downloadIcon}
+                alt=""
+                style={{ width: "40px", height: "40px" }}
+              />
+            </a>
+          </button>
+          <button className="cursot-pointer pointer-events-auto">
+            <a href="https://docs.google.com/document/d/1I-5jX56hN___h6EnesqfO_pWdNkKlgEFBCAqLAm8zhE/edit?usp=sharing" target="_blank">
+              <Image
+                src={lyricsIcon}
+                alt=""
+                style={{ width: "40px", height: "40px" }}
+              />
+            </a>
+          </button>
+      </div>
     </div>
   );
 };

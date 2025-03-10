@@ -54,7 +54,6 @@ export default function Home() {
 
        {/* Header with blockchain names */}
        <div className="relative h-24 z-60">
-       <Soundbar/>
         {/* Trail container - positioned below text */}
         {/* <div className="absolute inset-0 opacity-50">
           <CometTrail2
@@ -133,6 +132,9 @@ export default function Home() {
           </p>
         </div>
       </div>}
+      <div className="relative z-1000">
+       <Soundbar/>
+      </div>
 
       {/* Floating promotional texts */}
       <FloatingTexts2 texts={promotionalTexts} />
