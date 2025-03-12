@@ -21,7 +21,7 @@ export function isMainnet() {
   return process.env.NEXT_PUBLIC_NETWORK === "mainnet"
 }
 
-export const MESSAGE = "Starknet to be the first L2 to settle on both Bitcoin and Ethereum. Working towards truely realising the bitcoin vision: Decentralised low cost global payments system."
+export const MESSAGE = "Starknet will become the first L2 to settle on both Bitcoin & Ethereum, bringing the two largest blockchain ecosystems on a single layer, unlocking new DeFi opportunities and greater liquidity."
 
 export const SUPPORTED_CHAINS = isMainnet() ? [
   // { id: "starknet", name: "Starknet", plugin: "starknet" },

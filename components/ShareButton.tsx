@@ -29,7 +29,7 @@ export default function ShareButton() {
         >
           <TwitterShareButton
             url={'swmf.fun'}
-            title="Minted My NFT on Starknet"
+            title="I just minted the commemorative NFT of Starknet's move to be the first L2 to settle both on Bitcoin and Ethereum. Check it out!"
             style={{
               display: "flex",
               alignItems: "center",
