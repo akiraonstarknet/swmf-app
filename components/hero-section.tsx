@@ -254,7 +254,7 @@ export function HeroSection() {
       <button 
         className="px-10 py-2 bg-white text-black"
         onClick={() => setShowMintModal(!showMintModal)}
-      >Mint NFT</button>
+      >Inscribe onchain</button>
 
       {showMintModal && <div className="bg-[#1a1a1a] p-5 md:p-10" style={{marginTop: '15px', borderRadius: '10px'}}>
         <div className="w-full flex flex-col">
