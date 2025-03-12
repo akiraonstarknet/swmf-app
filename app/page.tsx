@@ -43,7 +43,7 @@ export default function Home() {
   ]
 
   return (
-    <div className="min-h-screen bg-black text-white p-8 pb-24">
+    <div className="min-h-screen bg-black text-white p-4 md:p-8 pb-24">
       <ToastContainer theme="dark" />
       {/* TPS trails container - positioned behind hero section */}
       {showTpsTrails && (

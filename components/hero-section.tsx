@@ -256,7 +256,7 @@ export function HeroSection() {
         onClick={() => setShowMintModal(!showMintModal)}
       >Mint NFT</button>
 
-      {showMintModal && <div className="bg-[#1a1a1a] p-10" style={{marginTop: '15px', borderRadius: '10px'}}>
+      {showMintModal && <div className="bg-[#1a1a1a] p-5 md:p-10" style={{marginTop: '15px', borderRadius: '10px'}}>
         <div className="w-full flex flex-col">
             <p className="text-sm md:text-md mb-6">
             Send the following message on your preferred chain and mint the SWMF NFT on Starknet to commemorate this historic moment for Starknet!
@@ -379,11 +379,16 @@ export function HeroSection() {
             )}
 
             {/* Message to Sign */}
-            <div className="bg-gray-800 p-4 text-left" style={{borderRadius: '20px'}}>
+            {!isMobile && <div className="bg-gray-800 p-4 text-left" style={{borderRadius: '20px'}}>
               <h3 className="text-gray-400 mb-2 text-sm">{activeStep == 1 ? "Your message will be seen on the blockchain like this:" : "Your message is seen on the blockchain like this:"}</h3>
               {/* <p className="text-white text-[14px] font-mono">{messageToSign}</p> */}
-              <img src="/sample-message.png"/>
-            </div>
+              <video src="/sample-message.mp4" autoPlay muted/>
+            </div>}
+            {isMobile && <div className="bg-gray-800 p-4 text-left" style={{borderRadius: '20px'}}>
+              <h3 className="text-gray-400 mb-2 text-sm">Message: </h3>
+              <p className="text-white text-[14px] font-mono">{messageToSign}</p>
+              {/* <video src="/sample-message.mp4" autoPlay muted/> */}
+            </div>}
         </div>
       </div>}
     </div>
