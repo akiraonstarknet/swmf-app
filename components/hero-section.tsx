@@ -368,9 +368,11 @@ export function HeroSection() {
                   )}
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400 mb-2">
+                  {sourceTransaction && <a href={transactionLink} target='_blank' className='underline'><button className='bg-[#49596e] px-[10px] py-[5px] rounded-md' style={{borderRadius: '10px'}}>Message Transaction: {shortAddress(sourceTransaction)}</button></a>}
+
+                  {/* <p className="text-sm text-gray-400 mb-2">
                     Source Tx: <a href={transactionLink} target="_blank" className="underline">{shortAddress(sourceTransaction)}</a> | Source User: {shortAddress(sourceUserAddress)}
-                  </p>
+                  </p> */}
                 </div>
                 <p className="mb-8">Your NFT will be seen after its minted.</p>
               </div>

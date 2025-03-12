@@ -137,11 +137,12 @@ export function EVMAction(props: SignerComponentProps) {
                             </div>}
                         </button>}
                     </div>
-                    <div className='flex gap-4 items-center justify-center mb-8'>
-                        {hash && <p>Tx Hash:{" "}
+                    <div className='flex gap-4 items-center justify-center mb-8 mt-2'>
+                        {hash && <a href={`${publicClient?.chain.blockExplorers?.default.url}/tx/${hash}`} target='_blank' className='underline'><button className='bg-[#49596e] px-[10px] py-[5px] rounded-md' style={{borderRadius: '10px'}}>Your Transaction: {shortAddress(hash)}</button></a>}
+                        {/* {hash && <p>Tx Hash:{" "}
                             <a href={`${publicClient?.chain.blockExplorers?.default.url}/tx/${hash}`} target='_blank' className='underline'>{shortAddress(hash)}</a>
                             {"  | "} Status: {txStatus}
-                        </p>}
+                        </p>} */}
                     </div>
                 </div>
             );
