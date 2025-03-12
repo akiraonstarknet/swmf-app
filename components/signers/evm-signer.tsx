@@ -31,7 +31,7 @@ export const config = createConfig(getDefaultConfig({
 }))
 
 export interface SignerComponentProps {
-    onSuccess: (txHash: string, userAddress: string) => void;
+    onSuccess: (txHash: string, userAddress: string, transactionLink: string) => void;
     protocolChainSelected: number;
 }
 
@@ -54,7 +54,7 @@ export function EVMAction(props: SignerComponentProps) {
     const { chainId } = useAccount()
     const { data: hash, sendTransactionAsync } = useSendTransaction()
 
-    const { data: txData, status: txStatus, isError, isLoading } = useWaitForTransactionReceipt({
+    const { data: txData, status: txStatus, isError, isLoading, isPending, isFetching, isFetched } = useWaitForTransactionReceipt({
         hash,
     });
 
@@ -64,7 +64,7 @@ export function EVMAction(props: SignerComponentProps) {
             toast.success('Transaction Successful',{
                 position:'top-right'
             })
-            props.onSuccess(hash, txData.from)
+            props.onSuccess(hash, txData.from, `${publicClient?.chain.blockExplorers?.default.url}/tx/${hash}`)
         }
         if (txData && hash && txStatus == 'error') {
             toast.error('Transaction Failed. Please retry.',{

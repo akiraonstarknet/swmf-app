@@ -75,10 +75,13 @@ export function HeroSection() {
   const [mintCompleted, setMintCompleted] = useState(false);
   const [sourceTransaction, setSourceTransaction] = useState<
     string | undefined
-  >("abc");
+  >("");
   const [sourceUserAddress, setSourceUserAddress] = useState<
     string | undefined
-  >("0x1");
+  >("");
+  const [transactionLink, setTransactionLink] = useState<string | undefined>(
+    "",
+  );
 
   const messageToSign = MESSAGE;
 
@@ -170,10 +173,11 @@ export function HeroSection() {
     }
   };
 
-  function onSuccessStep1(txHash: string, userAddress: string) {
+  function onSuccessStep1(txHash: string, userAddress: string, transactionLink: string) {
     setActiveStep(2);
     setSourceTransaction(txHash);
     setSourceUserAddress(userAddress);
+    setTransactionLink(transactionLink);
   }
 
   async function myDisconnect() {
@@ -237,144 +241,149 @@ export function HeroSection() {
       </Dialog>
 
       {/* Mint Steps */}
-      <Dialog open={showMintModal} onOpenChange={setShowMintModal}>
-        {/* Overlay for Background Opacity */}
+      {/* <Dialog open={showMintModal} onOpenChange={setShowMintModal}>
         {showMintModal && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]" />
         )}
 
         <DialogContent className=" p-10 sm:max-w-xl bg-gradient-to-b from-gray-900 to-black text-white rounded-2xl shadow-2xl z-[9999] transition-all border border-gray-800">
-          <div className="w-full flex flex-col">
-          <p className="text-sm md:text-md mb-6">
-          Send the following message on your preferred chain and mint the SWMF NFT on Starknet to commemorate this historic moment for Starknet!
-          </p>
-
-          {/* Steps */}
-          <ol className="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base mb-[20px]">
-            <li
-              className={`flex md:w-full items-center ${
-                activeStep == 1 ? activeClass : ""
-              } sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700`}
-            >
-              <span className="min-w-[135px] flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
-                <span className="me-2">1.</span>
-                Send Message
-              </span>
-            </li>
-            <li
-              className={`flex items-center min-w-[100px] ${
-                activeStep == 2 ? activeClass : ""
-              }`}
-            >
-              <span className="me-2">2.</span>
-              Mint NFT
-            </li>
-          </ol>
-
-          {/* Chain Selection Dropdown */}
-          {activeStep == 1 && (
-            <div className="mb-6 flex items-center justify-center">
-              <select
-                value={selectedChain}
-                onChange={(e) => {
-                  setSelectedChain(e.target.value)
-                  const selectedChainData = SUPPORTED_CHAINS.find(
-                    (chain) => chain.id === e.target.value
-                  );               
-                  if (selectedChainData) {
-                    setchainId(selectedChainData?.chainId)
-                  }
-                }}
-                className="bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700 w-full max-w-xs"
-              >
-                {SUPPORTED_CHAINS.map((chain) => (
-                  <option key={chain.id} value={chain.id}>
-                    {chain.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-
-          {/* Connect Wallet Button */}
-          {activeStep == 1 && (
-            <div>
-              <EVMSigner protocolChainSelected={chainId} onSuccess={onSuccessStep1} />
-            </div>
-          )}
-          {activeStep == 2 && (
-            <div>
-              <p className="mb-2 text-[13px] text-[#808080]">Your NFT will be minted on Starknet. If you don't have one, you can either install or signup using your email on Argent{"'"}s Web wallet.</p>
-              <div className="flex w-full gap-2 items-center justify-center">
-                <button
-                  className={cn(
-                    "bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-lg transition-colors mb-1",
-                    snAddress ? "bg-purple-600/20 hover:bg-purple-700/30" : ""
-                  )}
-                  onClick={() => {
-                    snAddress ? myDisconnect() : connectSNWallet();
-                  }}
-                >
-                  {snAddress
-                    ? `Starknet: ${shortAddress(snAddress)}`
-                    : "Connect Starknet Wallet"}
-                </button>
-                {snAddress && (
-                  <button
-                    className={`flex gap-4 items-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition-colors mb-1 ${
-                      minting || mintCompleted
-                        ? "disabled:bg-green-700/40 disabled:cursor-not-allowed disabled:text-white/40"
-                        : ""
-                    }`}
-                    onClick={mintNFT}
-                    disabled={minting || mintCompleted}
-                  >
-                    {mintCompleted ? "Mint Successfull" : "Mint NFT"}
-                    {minting && (
-                      <div role="status">
-                        <svg
-                          aria-hidden="true"
-                          className="w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-black"
-                          viewBox="0 0 100 101"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                            fill="currentColor"
-                          />
-                          <path
-                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                            fill="currentFill"
-                          />
-                        </svg>
-                        <span className="sr-only">Loading...</span>
-                      </div>
-                    )}
-                  </button>
-                )}
-              </div>
-              <div>
-                <p className="text-sm text-gray-400 mb-8">
-                  Source Tx: {shortAddress(sourceTransaction)} | Source User: {shortAddress(sourceUserAddress)}
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Message to Sign */}
-          {activeStep == 1 && <div className="bg-gray-800 p-4 text-left" style={{borderRadius: '20px'}}>
-            <h3 className="text-gray-400 mb-2 text-sm">Message to sign:</h3>
-            <p className="text-white text-[14px] font-mono">{messageToSign}</p>
-          </div>}
-        </div>
+        
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
 
       <button 
         className="px-10 py-2 bg-white text-black"
-        onClick={() => setShowMintModal(true)}
+        onClick={() => setShowMintModal(!showMintModal)}
       >Mint NFT</button>
+
+      {showMintModal && <div className="bg-[#1a1a1a] p-10" style={{marginTop: '15px', borderRadius: '10px'}}>
+        <div className="w-full flex flex-col">
+            <p className="text-sm md:text-md mb-6">
+            Send the following message on your preferred chain and mint the SWMF NFT on Starknet to commemorate this historic moment for Starknet!
+            </p>
+
+            {/* Steps */}
+            <ol className="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base mb-[20px]">
+              <li
+                className={`flex md:w-full items-center ${
+                  activeStep == 1 ? activeClass : ""
+                } sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700`}
+              >
+                <span className="min-w-[135px] flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
+                  <span className="me-2">1.</span>
+                  Send Message
+                </span>
+              </li>
+              <li
+                className={`flex items-center min-w-[100px] ${
+                  activeStep == 2 ? activeClass : ""
+                }`}
+              >
+                <span className="me-2">2.</span>
+                Mint NFT
+              </li>
+            </ol>
+
+            {/* Chain Selection Dropdown */}
+            {activeStep == 1 && (
+              <div className="mb-6 flex items-center justify-center">
+                <select
+                  value={selectedChain}
+                  onChange={(e) => {
+                    setSelectedChain(e.target.value)
+                    const selectedChainData = SUPPORTED_CHAINS.find(
+                      (chain) => chain.id === e.target.value
+                    );               
+                    if (selectedChainData) {
+                      setchainId(selectedChainData?.chainId)
+                    }
+                  }}
+                  className="bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700 w-full max-w-xs"
+                >
+                  {SUPPORTED_CHAINS.map((chain) => (
+                    <option key={chain.id} value={chain.id}>
+                      {chain.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {/* Connect Wallet Button */}
+            {activeStep == 1 && (
+              <div>
+                <EVMSigner protocolChainSelected={chainId} onSuccess={onSuccessStep1} />
+              </div>
+            )}
+            {activeStep == 2 && (
+              <div>
+                <p className="mb-2 text-[13px] text-[#808080]">Your NFT will be minted on Starknet. If you don't have one, you can either install or signup using your email on Argent{"'"}s Web wallet.</p>
+                <div className="flex w-full gap-2 items-center justify-center">
+                  <button
+                    className={cn(
+                      "bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-lg transition-colors mb-1",
+                      snAddress ? "bg-purple-600/20 hover:bg-purple-700/30" : ""
+                    )}
+                    onClick={() => {
+                      snAddress ? myDisconnect() : connectSNWallet();
+                    }}
+                  >
+                    {snAddress
+                      ? `Starknet: ${shortAddress(snAddress)}`
+                      : "Connect Starknet Wallet"}
+                  </button>
+                  {snAddress && (
+                    <button
+                      className={`flex gap-4 items-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition-colors mb-1 ${
+                        minting || mintCompleted
+                          ? "disabled:bg-green-700/40 disabled:cursor-not-allowed disabled:text-white/40"
+                          : ""
+                      }`}
+                      onClick={mintNFT}
+                      disabled={minting || mintCompleted}
+                    >
+                      {mintCompleted ? "Mint Successfull" : "Mint NFT"}
+                      {minting && (
+                        <div role="status">
+                          <svg
+                            aria-hidden="true"
+                            className="w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-black"
+                            viewBox="0 0 100 101"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                              fill="currentColor"
+                            />
+                            <path
+                              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                              fill="currentFill"
+                            />
+                          </svg>
+                          <span className="sr-only">Loading...</span>
+                        </div>
+                      )}
+                    </button>
+                  )}
+                </div>
+                <div>
+                  <p className="text-sm text-gray-400 mb-2">
+                    Source Tx: <a href={transactionLink} target="_blank" className="underline">{shortAddress(sourceTransaction)}</a> | Source User: {shortAddress(sourceUserAddress)}
+                  </p>
+                </div>
+                <p className="mb-8">Your NFT will be seen after its minted.</p>
+              </div>
+            )}
+
+            {/* Message to Sign */}
+            <div className="bg-gray-800 p-4 text-left" style={{borderRadius: '20px'}}>
+              <h3 className="text-gray-400 mb-2 text-sm">{activeStep == 1 ? "Your message will be seen on the blockchain like this:" : "Your message is seen on the blockchain like this:"}</h3>
+              {/* <p className="text-white text-[14px] font-mono">{messageToSign}</p> */}
+              <img src="/sample-message.png"/>
+            </div>
+        </div>
+      </div>}
     </div>
   );
 }
