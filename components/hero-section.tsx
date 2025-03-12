@@ -137,7 +137,7 @@ export function HeroSection() {
       const contract = new Contract(NFTAbi, nftAddr, provider);
       const call = contract.populate("mint", {
         tx_hash: sourceTransaction,
-        chain_id: 0,
+        chain_id: chainId.toString(),
         user_address: num.getDecimalString(sourceUserAddress),
       });
       const calldata: string[] = call.calldata as string[];

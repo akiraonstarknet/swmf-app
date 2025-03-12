@@ -5,6 +5,7 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 export const metadata: Metadata = {
   title: 'Starknet Will Melt Faces | SWMF',
   description: 'Starknet to be the first L2 to settle on both Bitcoin and Ethereum',
+  icons: '/favicon.ico',
 }
 
 export default function RootLayout({
