@@ -28,7 +28,7 @@ export default function ShareButton() {
           className="bg-white rounded-lg border border-black shadow-sm"
         >
           <TwitterShareButton
-            url={'https://www.swmf.fun'}
+            url={'https://swmf.fun?ref=x'}
             title="I just inscribed Starknet's historic move on-chain. Check it out!"
             style={{
               display: "flex",

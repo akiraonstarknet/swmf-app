@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     ]
   },
   twitter: {
-    card: 'summary_large_image',
+    card: 'summary_',
     title: 'Starknet Will Melt Faces | SWMF',
     description: 'Starknet to be the first L2 to settle on both Bitcoin and Ethereum',
     images: [
