@@ -11,7 +11,8 @@ export const metadata: Metadata = {
     description: 'Starknet to be the first L2 to settle on both Bitcoin and Ethereum',
     images: [
       {
-        url: 'https://swmf.fun/sample-message.png',
+        url: 'https://www.swmf.fun/og.jpg',
+        alt: 'Starknet Will Melt Faces | SWMF',
       }
     ]
   },
@@ -21,7 +22,8 @@ export const metadata: Metadata = {
     description: 'Starknet to be the first L2 to settle on both Bitcoin and Ethereum',
     images: [
       {
-        url: 'https://swmf.fun/sample-message.png',
+        url: 'https://www.swmf.fun/og.jpg',
+        alt: 'Starknet Will Melt Faces | SWMF',
       }
     ]
   }

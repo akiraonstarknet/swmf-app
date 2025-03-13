@@ -132,7 +132,7 @@ export default function Home() {
           </p>
         </div>
       </div>}
-      <div className="relative z-1000">
+      <div className="relative z-1000 mb-[300px]">
        <Soundbar/>
       </div>
 
